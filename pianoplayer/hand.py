@@ -167,6 +167,22 @@ class Hand:
         # if out[1]==-1: exit() #no combination found
         return out
 
+    def copy_note(self, note):
+        """Create a proper copy of a note object to avoid reference issues"""
+        import copy
+
+        # Create a shallow copy of the note
+        note_copy = copy.copy(note)
+
+        # For critical music21 objects, create new references
+        if hasattr(note, 'note21') and note.note21 is not None:
+            note_copy.note21 = copy.copy(note.note21)
+
+        if hasattr(note, 'chord21') and note.chord21 is not None:
+            note_copy.chord21 = copy.copy(note.chord21)
+
+        return note_copy
+
 
     ###########################################################################################
     def generate(self, start_measure=0, nmeasures=1000):
@@ -223,16 +239,6 @@ class Hand:
                 if an.measure != last_reported_measure:
                     current_measure = an.measure
                     last_reported_measure = current_measure
-                    # Call progress callback if available
-                    if self.callback:
-                        try:
-                            self.callback(
-                                measure=current_measure - start_measure + 1,
-                                total=nmeasures,
-                                status=f"Processing {self.LR} hand measure {current_measure - start_measure + 1}/{nmeasures}"
-                            )
-                        except Exception as e:
-                            print(f"Error in progress callback: {str(e)}")
 
             # Always use full window size since we have padding
             ninenotes = self.noteseq[i:i+9]
