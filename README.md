@@ -134,4 +134,5 @@ default the algorithm selects this number automatically based on the duration of
 so the tempo within the measure is not always respected.
 - Small notes/ornaments are ignored.
 
-
+## Related commercial products
+- [Alpha Piano ](https://alphapiano.net) Advanced Piano AI Fingering Software
